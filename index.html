@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天吃什么？</title>
+    <link rel="stylesheet" href="eat.css">
+    <script src="//unpkg.com/@element-plus/icons-vue" async></script>
+
+    <!-- 
+      !! 【重要】:
+      !! 引入 'Dancing Script' 字体，
+      !! 否则 #wheel-title 的“潦草飘逸”字体不会生效
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <Header id="header">
+        <h1 class="title">what do we eat today?</h1>
+    </Header>
+    <main class="main-container">
+
+        <div id="choice-screen">
+            <h1 class="ask">今天吃点啥呢？🤔</h1>
+            <div class="choice-buttons">
+                <!-- 为 JS 添加 data-type 属性 -->
+                <div class="btn-daily" data-type="daily">
+                    <h2>💢随便吃点 (安卓餐)</h2>
+                    <h1 class="emoji">🍛</h1>
+                    <el-icon :size="20">
+                        <Edit />
+                    </el-icon>
+                </div>
+                <div class="btn-fancy" data-type="fancy">
+                    <h2>🍎吃点好的! (苹果餐)</h2>
+                    <h1 class="emoji">🍖</h1>
+                </div>
+            </div>
+        </div>
+        <!-- 转盘 -->
+        <div id="wheel-screen">
+            <button id="back-btn">← 返回</button>
+            <h2 id="wheel-title">猜猜今天会抽到啥呢</h2>
+
+            <div class="wheel-wrapper">
+                <div class="pointer"></div>
+                <canvas id="wheel-canvas" width="300" height="300"></canvas>
+            </div>
+
+            <button id="spin-btn">开抽！</button>
+        </div>
+
+    </main>
+
+    <!-- 
+      ========================================
+      !! 【新增】结果弹窗
+      ========================================
+    -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h3>抽中了：</h3>
+            <h1 id="result-text"></h1>
+            <p id="result-price" style="display: none;"></p>
+            <p id="result-location" style="display: none;"></p>
+            <div class="modal-buttons">
+                <button id="spin-again-btn">再转一次</button>
+                <button id="close-modal-btn">好耶！</button>
+            </div>
+        </div>
+    </div>
+
+
+    <footer id="footer">
+        <p id="footer-text">
+            <span>注：本项目不具有广泛性，旨在给个别人使用</span>&nbsp;
+            <div style="margin-top: 10px;">&copy;2025 Jcher</div>
+        </p>
+    </footer>
+
+    <!-- 确保引入 JS 文件 -->
+    <script src="eat.js"></script>
+</body>
+
+</html>
+

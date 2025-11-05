@@ -1,0 +1,441 @@
+@charset "UTF-8";
+/* --- 变量和重置 --- */
+:root {
+  --primary-color: #ff6b6b;
+  --secondary-color: #4ecdc4;
+  --dark-color: #333;
+  --light-color: #f4f4f4;
+  --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(to bottom, #fffacd, #d8e6ad, #ffb6c1);
+  width: 100%;
+  min-height: 100vh;
+  padding: 0 10px;
+}
+
+html {
+  font-size: 16px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@font-face {
+  font-family: "DingTalk JinBuTi";
+  /* 使用英文名称避免编码问题 */
+  font-weight: 400;
+  src: url("https://at.alicdn.com/wf/webfont/rseG2qRst6R1/ns04XqLa8r2R.woff2") format("woff2"), url("https://at.alicdn.com/wf/webfont/rseG2qRst6R1/8uz5ixVzie7i.woff") format("woff");
+  font-variation-settings: normal;
+  font-display: swap;
+}
+body {
+  color: var(--dark-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+@property --deg {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes spin {
+  from {
+    --deg: 0deg;
+  }
+  to {
+    --deg: 360deg;
+  }
+}
+@keyframes pointer-press {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+#header {
+  margin: 3.125rem auto;
+  font-style: italic;
+  font-family: "DingTalk JinBuTi";
+  background-image: linear-gradient(to right, #98FB98, #B0E0E6);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 2.1875rem;
+  text-align: center;
+}
+
+/* --- 主容器和屏幕切换 --- */
+.main-container {
+  width: 100%;
+  max-width: 43.75rem;
+  background: #fff;
+  box-shadow: var(--shadow);
+  position: relative;
+  background-image: linear-gradient(to right bottom, #FFF0F5, #F5F5DC);
+  border-radius: 1.25rem;
+  display: none;
+}
+.main-container::after, .main-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 0.625rem);
+  height: calc(100% + 0.625rem);
+  box-sizing: border-box;
+  z-index: -1;
+  border-radius: 1.5625rem;
+  background: conic-gradient(from var(--deg) at 50% 50%, #ffc0cb 0%, #add8e6 25%, #90ee90 50%, #fffacd 75%, #ffb6c1 100%);
+  animation: spin 2s linear infinite;
+}
+.main-container::before {
+  filter: blur(30px);
+}
+.main-container #choice-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.875rem;
+  text-align: center;
+  width: 100%;
+}
+.main-container #choice-screen .ask {
+  color: #4ECDC4 !important;
+  font-style: italic;
+  font-family: "DingTalk JinBuTi", "钉钉进步体 Regular", sans-serif;
+}
+.main-container #choice-screen .choice-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60%;
+  margin-top: 1.875rem;
+}
+.main-container #choice-screen .choice-buttons .btn-daily,
+.main-container #choice-screen .choice-buttons .btn-fancy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: 40vh;
+  margin: 0 0.625rem;
+  background-image: linear-gradient(to right bottom, #B2EBF2, #FFE0E0);
+  padding: 0.625rem;
+  border-radius: 0.625rem;
+  font-family: "DingTalk JinBuTi", "钉钉进步体 Regular", sans-serif;
+  color: var(--dark-color);
+  cursor: pointer;
+}
+.main-container #choice-screen .choice-buttons .btn-daily .emoji,
+.main-container #choice-screen .choice-buttons .btn-fancy .emoji {
+  font-size: 6.25rem;
+}
+.main-container #choice-screen .choice-buttons .btn-daily:hover,
+.main-container #choice-screen .choice-buttons .btn-fancy:hover {
+  transform: translate(0, -2px);
+  transition: transform 0.5s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.main-container #wheel-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1.875rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+.main-container #wheel-screen #back-btn {
+  position: absolute;
+  top: 1.5625rem;
+  left: 1.5625rem;
+  background: #ffffff;
+  border: 1px solid #eee;
+  border-radius: 3.125rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+.main-container #wheel-screen #back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+.main-container #wheel-screen #back-btn:active {
+  transform: translateY(0);
+}
+.main-container #wheel-screen #wheel-title {
+  font-family: "DingTalk JinBuTi", "钉钉进步体 Regular", sans-serif;
+  font-size: 2.1875rem;
+  color: transparent;
+  -webkit-background-clip: text;
+          background-clip: text;
+  background-image: linear-gradient(to right, #ffc0cb, #ffb6c1);
+  margin-bottom: 1.25rem;
+  margin-top: 2.5rem;
+  text-align: center;
+  font-style: italic;
+}
+.main-container #wheel-screen .wheel-wrapper {
+  position: relative;
+  margin: 1.25rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main-container #wheel-screen .wheel-wrapper .pointer {
+  width: 0;
+  height: 0;
+  border-left: 1.25rem solid transparent;
+  border-right: 1.25rem solid transparent;
+  border-top: 2.25rem solid #ff999f;
+  position: absolute;
+  top: -1.5rem;
+  z-index: 10;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+.main-container #wheel-screen #wheel-canvas {
+  border-radius: 50%;
+  border: 0.625rem solid #ffffff;
+  box-shadow: 0 0.625rem 1.5625rem rgba(0, 0, 0, 0.1), inset 0 0 0.9375rem rgba(0, 0, 0, 0.05);
+  transition: transform 6s cubic-bezier(0.1, 0.7, 0.3, 1);
+}
+.main-container #wheel-screen #spin-btn {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(45deg, #ff999f, #ffb6c1);
+  border: none;
+  border-radius: 3.125rem;
+  padding: 1.125rem 3.125rem;
+  cursor: pointer;
+  box-shadow: 0 0.375rem 1.25rem rgba(255, 153, 159, 0.4);
+  transition: all 0.3s ease;
+  margin-top: 1.25rem;
+}
+.main-container #wheel-screen #spin-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 153, 159, 0.5);
+}
+.main-container #wheel-screen #spin-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 15px rgba(255, 153, 159, 0.3);
+}
+.main-container #wheel-screen .pointer.is-spinning {
+  animation: pointer-press 0.4s ease-out;
+}
+
+/* * ========================================
+ * !! 【新增】结果弹窗样式
+ * ========================================
+ */
+@keyframes modal-pop {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#result-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+#result-modal .modal-content {
+  background: #ffffff;
+  padding: 1.875rem 2.5rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: "DingTalk JinBuTi", sans-serif;
+  border: 0.3125rem solid #ff999f;
+  animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#result-modal .modal-content h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 0.625rem;
+}
+#result-modal .modal-content #result-text {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ff999f;
+  margin-bottom: 1.5625rem;
+}
+#result-modal .modal-content #result-price,
+#result-modal .modal-content #result-location {
+  font-size: 1rem;
+  color: #666;
+  margin: 0.625rem 0;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+  animation-delay: 0.2s;
+}
+#result-modal .modal-content .modal-buttons {
+  display: flex;
+  gap: 0.9375rem;
+  justify-content: center;
+  margin-top: 1.5625rem;
+  flex-wrap: wrap;
+}
+#result-modal .modal-content #spin-again-btn,
+#result-modal .modal-content #close-modal-btn {
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 3.125rem;
+  padding: 0.75rem 1.875rem;
+  cursor: pointer;
+  box-shadow: 0 0.375rem 1.25rem rgba(255, 153, 159, 0.4);
+  transition: all 0.3s ease;
+  border: none;
+  font-family: "DingTalk JinBuTi", sans-serif;
+}
+#result-modal .modal-content #spin-again-btn {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #ff999f;
+  border: 2px solid #ff999f;
+}
+#result-modal .modal-content #spin-again-btn:hover {
+  background-color: #ff999f;
+  color: white;
+  transform: scale(1.05);
+}
+#result-modal .modal-content #close-modal-btn {
+  color: #ffffff;
+  background: linear-gradient(45deg, #ff999f, #ffb6c1);
+  border: none;
+}
+#result-modal .modal-content #close-modal-btn:hover {
+  transform: scale(1.05);
+}
+
+#footer {
+  padding: 1.25rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #888;
+}
+#footer #footer-text span {
+  font-size: 0.8rem;
+  font-style: oblique !important;
+}
+
+/* --- 媒体查询 - 移动端适配 --- */
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  .main-container {
+    max-width: 90%;
+  }
+  #wheel-canvas {
+    width: 15rem !important;
+    height: 15rem !important;
+  }
+  .btn-daily, .btn-fancy {
+    height: 35vh;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+  .main-container {
+    max-width: 95%;
+    border-radius: 1rem;
+  }
+  #wheel-canvas {
+    width: 12rem !important;
+    height: 12rem !important;
+  }
+  #choice-screen {
+    padding: 1rem !important;
+  }
+  .choice-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .btn-daily, .btn-fancy {
+    width: 100%;
+    height: 25vh;
+    margin: 0 !important;
+  }
+  .emoji {
+    font-size: 5rem !important;
+  }
+  #wheel-screen {
+    padding: 1rem !important;
+  }
+  #back-btn {
+    top: 1rem !important;
+    left: 1rem !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem;
+  }
+  #wheel-title {
+    font-size: 1.8rem !important;
+    margin-top: 2rem !important;
+  }
+  #spin-btn {
+    padding: 1rem 2rem !important;
+    font-size: 1.3rem;
+  }
+  .modal-content {
+    padding: 1.5rem !important;
+    margin: 1rem;
+  }
+  #result-text {
+    font-size: 2.5rem !important;
+  }
+  .modal-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  #spin-again-btn, #close-modal-btn {
+    width: 100%;
+  }
+}/*# sourceMappingURL=eat.css.map */
